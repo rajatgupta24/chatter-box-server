@@ -1,23 +1,28 @@
-const express = require("express");
-const socketio = require("socket.io");
-const http = require("http");
-
-const router = require("./router");
+const app = require("express")();
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true
+  }
+});
 
 const PORT = process.env.PORT || 5000;
-
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+const router = require("./router");
 
 io.on("connection", (socket) => {
-    console.log("we connected!!!");
+  console.log("we are connected to server!!!");
 
-    socket.on("disconnect", () => {
-        console.log("User Left");
-    })
-})
+  socket.on("join", ({ name, room }) => {
+    console.log(name, room);
+
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User has left!!!");
+  })
+});
 
 app.use(router);
 
-server.listen(PORT, () => console.log(`server is started ${PORT}`));
+httpServer.listen(PORT, () => console.log(`server is started ${PORT}`));

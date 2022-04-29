@@ -1,0 +1,24 @@
+.App {
+  padding: 1rem;
+
+  display: flex;
+  justify-content: space-around;
+  background-color: aqua;
+}
+
+.editor{
+  width: 50%;
+  height: 90vh;
+
+  padding: 1rem;
+
+  border: none;
+  outline: none;
+
+}
+
+.md{
+  width: 50%;
+  padding: 1rem;
+  background-color: aquamarine;
+}

@@ -17,7 +17,7 @@ function App() {
     try {
       const res = await axios.post('/md', data)
       
-      if (res.data != ""){
+      if (res.data !== ""){
         navigator.clipboard.writeText(res.data)
       }
 

@@ -7,8 +7,6 @@ function App() {
   const [text, setText] = useState("")
 
   const compile = async () => {
-    let base64Str = btoa(text);
-
     const data = {
       text: text
     }

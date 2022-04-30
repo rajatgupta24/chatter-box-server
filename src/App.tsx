@@ -8,14 +8,13 @@ function App() {
 
   const compile = async () => {
     let base64Str = btoa(text);
-    console.log(base64Str);
 
     const data = {
       text: text
     }
 
     try {
-      const res = await axios.post('/md', data)
+      const res = await axios.post('https://murmuring-cliffs-11075.herokuapp.com/md', data)
       
       if (res.data !== ""){
         navigator.clipboard.writeText(res.data)

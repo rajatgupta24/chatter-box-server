@@ -1,36 +1,31 @@
 import { useState } from 'react';
+import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-
 import './App.css';
-
-// const doc = new jsPDF();
 
 function App() {
   const [text, setText] = useState("")
 
-  const save = () => {
-    const input = document.getElementById("md") as HTMLElement;
-    
-    html2canvas(input, {
-      logging: true,
-      useCORS: true,
-    }).then(canvas => {
-      const imgWidth = 208;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      const imgData = canvas.toDataURL("img/png")
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      pdf.save("new.pdf");
-    })
-  };
+  const compile = async () => {
+    let base64Str = btoa(text);
+    console.log(base64Str);
 
-  const savePDF = () => {
-    
+    const data = {
+      text: text
+    }
+
+    try {
+      const res = await axios.post('/md', data)
+      
+      if (res.data != ""){
+        navigator.clipboard.writeText(res.data)
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
   }
-
+  
   return (
     <>
       <div className="App">
@@ -40,8 +35,7 @@ function App() {
         </div>
       </div>
       <div className='btns'>
-        <button onClick={savePDF}>Save PDF</button>
-        <button onClick={save}>Save MD</button>
+        <button onClick={compile}>Copy base64</button>
       </div>
     </>
   );
